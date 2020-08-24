@@ -28,6 +28,7 @@
 #include "CoordinateTransformer.h"
 #include "Camera.h"
 #include "Entity.h"
+#include <memory>
 
 class Game
 {
@@ -50,7 +51,7 @@ private:
 	CoordinateTransformer ct;
 	Camera cam;
 	static constexpr float camSpeed = 10.0f;
-	static constexpr int nEntities = 30;
-	std::vector<Entity> scene;
+	static constexpr int nEntities = 50;
+	std::vector<std::unique_ptr<Entity>> scene;
 	/********************************/
 };

@@ -2,11 +2,30 @@
 
 #include <vector>
 #include "Vec2.h"
+#include "Entity.h"
 
-class Star
+class Star : public Entity
 {
 public:
-	static std::vector<Vec2> Make( float outerRadius,float innerRadius,int nFlares = 5 )
+	Star( float outerRadius,float innerRadius,int nFlares,Vec2 pos,Color c )
+		:
+		Entity( Make( outerRadius,innerRadius,nFlares ),pos,c ),
+		outRad( outerRadius ),
+		inRad( innerRadius )
+	{
+	}
+
+	inline float GetOuterRadius() const
+	{
+		return outRad;
+	}
+	inline float GetInnerRadius() const
+	{
+		return inRad;
+	}
+
+private:
+	std::vector<Vec2> Make( float outerRadius,float innerRadius,int nFlares = 5 )
 	{
 		std::vector<Vec2> star;
 		star.reserve( 2 * size_t( nFlares ) );
@@ -21,4 +40,8 @@ public:
 		}
 		return star;
 	}
+
+private:
+	float outRad;
+	float inRad;
 };

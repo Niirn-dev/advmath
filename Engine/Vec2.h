@@ -48,6 +48,14 @@ public:
 	{
 		return sqrt( LenSq() );
 	}
+	T		DistTo( _Vec2 target ) const
+	{
+		return (T)sqrt( DistToSq( target ) );
+	}
+	T		DistToSq( _Vec2 target ) const
+	{
+		return ( x - target.x ) * ( x - target.x ) + ( y - target.y ) * ( y - target.y );
+	}
 	_Vec2&	Normalize()
 	{
 		const T length = Len();

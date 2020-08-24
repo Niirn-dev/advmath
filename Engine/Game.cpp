@@ -23,6 +23,8 @@
 #include "Vec2.h"
 #include "Star.h"
 #include <random>
+#include <algorithm>
+#include <iterator>
 
 Game::Game( MainWindow& wnd )
 	:
@@ -32,15 +34,40 @@ Game::Game( MainWindow& wnd )
 	cam( ct )
 {
 	std::mt19937 rng( std::random_device{}() );
-	std::uniform_real_distribution<float> posDist( -1000.0f,1000.0f );
+	std::uniform_real_distribution<float> posDist( -2000.0f,2000.0f );
 	std::uniform_real_distribution<float> inRadDist( 40.0f,120.0f );
 	std::uniform_real_distribution<float> outRadDist( 140.0f,300.0f );
 	std::uniform_int_distribution<int> flaresDist( 3,16 );
+	std::uniform_int_distribution<unsigned int> cDist( 0,255 );
 	scene.reserve( nEntities );
-	for ( int i = 0; i < nEntities; ++i )
-	{
-		scene.emplace_back( Star::Make( outRadDist( rng ),inRadDist( rng ),flaresDist( rng ) ),Vec2{ posDist( rng ),posDist( rng ) },Colors::Yellow );
-	}
+	std::generate_n( std::back_inserter( scene ),nEntities,
+					 [&]() 
+					 {
+						 float outRad = outRadDist( rng );
+						 float inRad = inRadDist( rng );
+						 Vec2 pos;
+						 do
+						 {
+							 pos = Vec2{ posDist( rng ),posDist( rng ) };
+						 } while (
+							 std::find_if( scene.begin(),scene.end(),
+										   [&]( const std::unique_ptr<Entity>& pe )
+										   {
+											   Star* ps = reinterpret_cast<Star*>( pe.get() );
+											   return pos.DistToSq( ps->GetPosition() ) < 
+												   outRad * outRad + 2 * outRad * ps->GetOuterRadius() + ps->GetOuterRadius() * ps->GetOuterRadius();
+										   }
+							) != scene.end() );
+
+						 return std::make_unique<Star>(
+								 outRad,inRad,flaresDist( rng ),
+								 pos,
+								 Color{ unsigned char( cDist( rng ) ),
+										unsigned char( cDist( rng ) ),
+										unsigned char( cDist( rng ) )
+								 }
+						 );
+					 } );
 }
 
 void Game::Go()
@@ -91,6 +118,6 @@ void Game::ComposeFrame()
 {
 	for ( const auto& e : scene )
 	{
-		cam.Draw( std::move( e.GetDrawable() ) );
+		cam.Draw( std::move( e->GetDrawable() ) );
 	}
 }

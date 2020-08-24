@@ -15,6 +15,7 @@ public:
 		pos( pos )
 	{
 	}
+	virtual ~Entity() = default;
 	inline void TranslateBy( Vec2 offset )
 	{
 		pos += offset;
@@ -47,7 +48,7 @@ public:
 		return c;
 	}
 
-private:
+protected:
 	Color c;
 	std::vector<Vec2> model;
 	Vec2 pos = { 0.0f,0.0f };
