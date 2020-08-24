@@ -28,7 +28,8 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	ct( gfx ),
-	cam( ct )
+	cam( ct ),
+	ent( Star::Make( 150.0f,20.0f,12 ),Vec2{ 0.0f,0.0f },Colors::Cyan )
 {
 }
 
@@ -78,5 +79,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	cam.DrawPolyline( Star::Make( 150.0f,20.0f,12 ),Colors::Red );
+	cam.DrawPolyline( std::move( ent.GetModel() ),ent.GetColor() );
 }
