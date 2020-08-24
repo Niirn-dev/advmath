@@ -27,7 +27,8 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	ct( gfx )
+	ct( gfx ),
+	cam( ct )
 {
 }
 
@@ -41,9 +42,41 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if ( !wnd.kbd.KeyIsEmpty() )
+	{
+		if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
+		{
+			cam.AddPosition( Vec2{ -5.0f,0.0f } );
+		}
+		if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
+		{
+			cam.AddPosition( Vec2{ 5.0f,0.0f } );
+		}
+		if ( wnd.kbd.KeyIsPressed( VK_UP ) )
+		{
+			cam.AddPosition( Vec2{ 0.0f,5.0f } );
+		}
+		if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
+		{
+			cam.AddPosition( Vec2{ 0.0f,-5.0f } );
+		}
+	}
+
+	while ( !wnd.mouse.IsEmpty() )
+	{
+		const auto e = wnd.mouse.Read();
+		if ( e.GetType() == Mouse::Event::Type::WheelUp )
+		{
+			cam.SetScale( cam.GetScale() * 1.05f );
+		}
+		if ( e.GetType() == Mouse::Event::Type::WheelDown )
+		{
+			cam.SetScale( cam.GetScale() * 0.95f );
+		}
+	}
 }
 
 void Game::ComposeFrame()
 {
-	ct.DrawPolyline( Star::Make( 150.0f,20.0f,12 ),Colors::Red );
+	cam.DrawPolyline( Star::Make( 150.0f,20.0f,12 ),Colors::Red );
 }

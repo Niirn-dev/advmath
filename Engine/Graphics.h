@@ -84,7 +84,7 @@ public:
 	{
 		return RectI(
 			Vei2( 0,0 ),
-			Vei2( ScreenWidth,ScreenHeight )
+			Vei2( ScreenWidth - 1,ScreenHeight - 1 )
 		);
 	}
 };

@@ -21,7 +21,7 @@ public:
 			v.y *= -1.0f;
 			v += offset;
 		}
-		gfx.DrawPolyline( verts,c );
+		gfx.DrawPolyline( std::move( verts ),c );
 	}
 
 private:

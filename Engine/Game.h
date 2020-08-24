@@ -26,6 +26,7 @@
 #include <vector>
 #include "Vec2.h"
 #include "CoordinateTransformer.h"
+#include "Camera.h"
 
 class Game
 {
@@ -46,5 +47,6 @@ private:
 	/********************************/
 	/*  User Variables              */
 	CoordinateTransformer ct;
+	Camera cam;
 	/********************************/
 };
