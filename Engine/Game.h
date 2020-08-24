@@ -50,7 +50,7 @@ private:
 	/*  User Variables              */
 	CoordinateTransformer ct;
 	Camera cam;
-	static constexpr float camSpeed = 10.0f;
+	Vei2 prevMousePos = { 0,0 };
 	static constexpr int nEntities = 50;
 	std::vector<std::unique_ptr<Entity>> entityPtrs;
 	/********************************/

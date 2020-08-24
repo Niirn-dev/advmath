@@ -80,37 +80,30 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if ( !wnd.kbd.KeyIsEmpty() )
-	{
-		if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
-		{
-			cam.MoveBy( Vec2{ -camSpeed,0.0f } );
-		}
-		if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
-		{
-			cam.MoveBy( Vec2{ camSpeed,0.0f } );
-		}
-		if ( wnd.kbd.KeyIsPressed( VK_UP ) )
-		{
-			cam.MoveBy( Vec2{ 0.0f,camSpeed } );
-		}
-		if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
-		{
-			cam.MoveBy( Vec2{ 0.0f,-camSpeed } );
-		}
-	}
-
 	while ( !wnd.mouse.IsEmpty() )
 	{
 		const auto e = wnd.mouse.Read();
-		if ( e.GetType() == Mouse::Event::Type::WheelUp )
+		if ( e.GetType() == Mouse::Event::Type::LPress )
+		{
+			prevMousePos = e.GetPos();
+		}
+		else if ( e.GetType() == Mouse::Event::Type::WheelUp )
 		{
 			cam.SetScale( cam.GetScale() * 1.05f );
 		}
-		if ( e.GetType() == Mouse::Event::Type::WheelDown )
+		else if ( e.GetType() == Mouse::Event::Type::WheelDown )
 		{
 			cam.SetScale( cam.GetScale() * 0.95f );
 		}
+	}
+	if ( wnd.mouse.LeftIsPressed() )
+	{
+		const Vei2 curMousePos = wnd.mouse.GetPos();
+		Vec2 deltaPos = Vec2( curMousePos - prevMousePos );
+		deltaPos.x *= -1.0f;
+
+		cam.MoveBy( deltaPos / cam.GetScale() );
+		prevMousePos = curMousePos;
 	}
 }
 

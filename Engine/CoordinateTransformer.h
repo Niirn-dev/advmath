@@ -21,6 +21,14 @@ public:
 		drawable.Translate( offset );
 		drawable.Render( gfx );
 	}
+	template<typename T>
+	static _Vec2<T> TransformVec2( _Vec2<T> v )
+	{
+		const _Vec2<T> offset = _Vec2<T>{ T( Graphics::ScreenWidth / 2 ),T( Graphics::ScreenHeight / 2 ) };
+		v.y *= T( -1 );
+		v += offset;
+		return v;
+	}
 
 private:
 	Graphics& gfx;
