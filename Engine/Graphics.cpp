@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <string>
 #include <array>
+#include <limits>
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
@@ -314,6 +315,28 @@ void Graphics::PutPixel( int x,int y,Color c )
 	assert( y >= 0 );
 	assert( y < int( Graphics::ScreenHeight ) );
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
+}
+
+void Graphics::DrawLine( Vec2 p0,Vec2 p1,Color c )
+{
+	int steps;
+	float dx = p1.x - p0.x;
+	float dy = p1.y - p0.y;
+	if ( std::abs( dx ) > std::abs( dy ) )
+	{
+		steps = (int)std::abs( dx );
+	}
+	else
+	{
+		steps = (int)std::abs( dy );
+	}
+
+	dx = dx / (float)steps;
+	dy = dy / (float)steps;
+	for ( int i = 0; i < steps; ++i )
+	{
+		PutPixel( int( p0.x + dx * i),int( p0.y + dy * i ),c );
+	}
 }
 
 
