@@ -339,6 +339,15 @@ void Graphics::DrawLine( Vec2 p0,Vec2 p1,Color c )
 	}
 }
 
+void Graphics::DrawPolyline( std::vector<Vec2> verts,Color c )
+{
+	for ( auto it = verts.begin(); it != std::prev( verts.end() ); ++it )
+	{
+		DrawLine( *it,*std::next( it ),c );
+	}
+	DrawLine( verts.back(),verts.front(),c );
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception

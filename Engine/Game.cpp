@@ -27,6 +27,10 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
+	verts.emplace_back( 50.0f,50.0f );
+	verts.emplace_back( 100.0f,50.0f );
+	verts.emplace_back( 100.0f,150.0f );
+	verts.emplace_back( 50.0f,150.0f );
 }
 
 void Game::Go()
@@ -43,9 +47,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	if ( wnd.mouse.LeftIsPressed() )
-	{
-		const auto pos = wnd.mouse.GetPos();
-		gfx.DrawLine( Vec2{ 400.0f,300.0f },Vec2( pos ),Colors::Cyan );
-	}
+	gfx.DrawPolyline( verts,Colors::Red );
 }
