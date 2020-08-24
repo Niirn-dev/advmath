@@ -344,13 +344,28 @@ void Graphics::DrawLine( Vec2 p0,Vec2 p1,Color c )
 	}
 }
 
-void Graphics::DrawPolyline( const std::vector<Vec2>& verts,Color c )
+void Graphics::DrawClosedPolyline( const std::vector<Vec2>& verts,Color c )
 {
 	for ( auto it = verts.begin(); it != std::prev( verts.end() ); ++it )
 	{
 		DrawLine( *it,*std::next( it ),c );
 	}
 	DrawLine( verts.back(),verts.front(),c );
+}
+
+void Graphics::DrawClosedPolyline( const std::vector<Vec2>& verts,const Vec2& translation,float scale_x,float scale_y,Color c )
+{
+	for ( auto it = verts.begin(); it != std::prev( verts.end() ); ++it )
+	{
+		DrawLine( 
+			Vec2( it->x * scale_x,it->y * scale_y ) + translation,
+			Vec2( std::next( it )->x * scale_x,std::next( it )->y * scale_y ) + translation,
+			c );
+	}
+	DrawLine(
+		Vec2( verts.back().x * scale_x,verts.back().y * scale_y ) + translation,
+		Vec2( verts.front().x * scale_x,verts.front().y * scale_y ) + translation,
+		c );
 }
 
 
