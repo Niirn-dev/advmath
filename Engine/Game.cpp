@@ -21,16 +21,14 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "Vec2.h"
+#include "Star.h"
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	ct( gfx )
 {
-	verts.emplace_back( -50.0f,50.0f );
-	verts.emplace_back( 100.0f,50.0f );
-	verts.emplace_back( 100.0f,150.0f );
-	verts.emplace_back( 50.0f,150.0f );
 }
 
 void Game::Go()
@@ -47,5 +45,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	gfx.DrawPolyline( verts,Colors::Red );
+	ct.DrawPolyline( Star::Make( 150.0f,20.0f,12 ),Colors::Red );
 }

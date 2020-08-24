@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include <vector>
 #include "Vec2.h"
+#include "CoordinateTransformer.h"
 
 class Game
 {
@@ -44,6 +45,6 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	std::vector<Vec2> verts;
+	CoordinateTransformer ct;
 	/********************************/
 };
