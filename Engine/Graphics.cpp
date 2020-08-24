@@ -335,7 +335,12 @@ void Graphics::DrawLine( Vec2 p0,Vec2 p1,Color c )
 	dy = dy / (float)steps;
 	for ( int i = 0; i < steps; ++i )
 	{
-		PutPixel( int( p0.x + dx * i),int( p0.y + dy * i ),c );
+		const int x = int( p0.x + dx * i );
+		const int y = int( p0.y + dy * i );
+		if ( GetScreenRect().Contains( Vei2{ x,y } ) )
+		{
+			PutPixel( x,y,c );
+		}
 	}
 }
 

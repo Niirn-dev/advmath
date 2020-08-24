@@ -26,6 +26,7 @@
 #include "Colors.h"
 #include "Vec2.h"
 #include <vector>
+#include "Rect.h"
 
 class Graphics
 {
@@ -79,4 +80,11 @@ private:
 public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
+	static RectI GetScreenRect()
+	{
+		return RectI(
+			Vei2( 0,0 ),
+			Vei2( ScreenWidth,ScreenHeight )
+		);
+	}
 };

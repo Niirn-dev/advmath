@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
-	verts.emplace_back( 50.0f,50.0f );
+	verts.emplace_back( -50.0f,50.0f );
 	verts.emplace_back( 100.0f,50.0f );
 	verts.emplace_back( 100.0f,150.0f );
 	verts.emplace_back( 50.0f,150.0f );
