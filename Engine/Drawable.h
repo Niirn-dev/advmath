@@ -31,20 +31,15 @@ public:
 		translation.x *= factor_x;
 		translation.y *= factor_y;
 	}
-	std::vector<Vec2> GetPolyline() const
+	void Render( Graphics& gfx )
 	{
-		auto verts = model;
-		for ( auto& v : verts )
+		for ( auto& v : model )
 		{
 			v.x *= scale_x;
 			v.y *= scale_y;
 			v += translation;
 		}
-		return std::move( verts );
-	}
-	inline Color GetColor() const
-	{
-		return c;
+		gfx.DrawPolyline( model,c );
 	}
 
 private:

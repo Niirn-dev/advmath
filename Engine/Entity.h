@@ -37,10 +37,10 @@ public:
 	}
 	Drawable GetDrawable() const
 	{
-		Drawable d( model,c );
-		d.Scale( scale );
-		d.Translate( pos );
-		return std::move( d );
+		Drawable drawable( model,c );
+		drawable.Scale( scale );
+		drawable.Translate( pos );
+		return std::move( drawable );
 	}
 	inline Color GetColor() const
 	{

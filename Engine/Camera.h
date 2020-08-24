@@ -38,11 +38,11 @@ public:
 		return scale;
 	}
 
-	void Draw( Drawable d ) const
+	void Draw( Drawable drawable ) const
 	{
-		d.Translate( -pos );
-		d.Scale( scale );
-		ct.Draw( std::move( d ) );
+		drawable.Translate( -pos );
+		drawable.Scale( scale );
+		ct.Draw( std::move( drawable ) );
 	}
 
 private:

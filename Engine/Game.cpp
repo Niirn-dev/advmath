@@ -22,15 +22,25 @@
 #include "Game.h"
 #include "Vec2.h"
 #include "Star.h"
+#include <random>
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
 	ct( gfx ),
-	cam( ct ),
-	ent( Star::Make( 150.0f,20.0f,12 ),Vec2{ 0.0f,0.0f },Colors::Cyan )
+	cam( ct )
 {
+	std::mt19937 rng( std::random_device{}() );
+	std::uniform_real_distribution<float> posDist( -1000.0f,1000.0f );
+	std::uniform_real_distribution<float> inRadDist( 40.0f,120.0f );
+	std::uniform_real_distribution<float> outRadDist( 140.0f,300.0f );
+	std::uniform_int_distribution<int> flaresDist( 3,16 );
+	scene.reserve( nEntities );
+	for ( int i = 0; i < nEntities; ++i )
+	{
+		scene.emplace_back( Star::Make( outRadDist( rng ),inRadDist( rng ),flaresDist( rng ) ),Vec2{ posDist( rng ),posDist( rng ) },Colors::Yellow );
+	}
 }
 
 void Game::Go()
@@ -47,19 +57,19 @@ void Game::UpdateModel()
 	{
 		if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
 		{
-			cam.MoveBy( Vec2{ -5.0f,0.0f } );
+			cam.MoveBy( Vec2{ -camSpeed,0.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
 		{
-			cam.MoveBy( Vec2{ 5.0f,0.0f } );
+			cam.MoveBy( Vec2{ camSpeed,0.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( VK_UP ) )
 		{
-			cam.MoveBy( Vec2{ 0.0f,5.0f } );
+			cam.MoveBy( Vec2{ 0.0f,camSpeed } );
 		}
 		if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
 		{
-			cam.MoveBy( Vec2{ 0.0f,-5.0f } );
+			cam.MoveBy( Vec2{ 0.0f,-camSpeed } );
 		}
 	}
 
@@ -79,5 +89,8 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	cam.Draw( std::move( ent.GetDrawable() ) );
+	for ( const auto& e : scene )
+	{
+		cam.Draw( std::move( e.GetDrawable() ) );
+	}
 }

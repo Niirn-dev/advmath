@@ -344,7 +344,7 @@ void Graphics::DrawLine( Vec2 p0,Vec2 p1,Color c )
 	}
 }
 
-void Graphics::DrawPolyline( std::vector<Vec2> verts,Color c )
+void Graphics::DrawPolyline( const std::vector<Vec2>& verts,Color c )
 {
 	for ( auto it = verts.begin(); it != std::prev( verts.end() ); ++it )
 	{

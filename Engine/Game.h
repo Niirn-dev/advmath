@@ -49,6 +49,8 @@ private:
 	/*  User Variables              */
 	CoordinateTransformer ct;
 	Camera cam;
-	Entity ent;
+	static constexpr float camSpeed = 10.0f;
+	static constexpr int nEntities = 30;
+	std::vector<Entity> scene;
 	/********************************/
 };
