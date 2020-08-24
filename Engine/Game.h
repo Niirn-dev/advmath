@@ -52,6 +52,6 @@ private:
 	Camera cam;
 	static constexpr float camSpeed = 10.0f;
 	static constexpr int nEntities = 50;
-	std::vector<std::unique_ptr<Entity>> scene;
+	std::vector<std::unique_ptr<Entity>> entityPtrs;
 	/********************************/
 };

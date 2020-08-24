@@ -39,8 +39,8 @@ Game::Game( MainWindow& wnd )
 	std::uniform_real_distribution<float> outRadDist( 140.0f,300.0f );
 	std::uniform_int_distribution<int> flaresDist( 3,16 );
 	std::uniform_int_distribution<unsigned int> cDist( 0,255 );
-	scene.reserve( nEntities );
-	std::generate_n( std::back_inserter( scene ),nEntities,
+	entityPtrs.reserve( nEntities );
+	std::generate_n( std::back_inserter( entityPtrs ),nEntities,
 					 [&]() 
 					 {
 						 float outRad = outRadDist( rng );
@@ -50,14 +50,14 @@ Game::Game( MainWindow& wnd )
 						 {
 							 pos = Vec2{ posDist( rng ),posDist( rng ) };
 						 } while (
-							 std::find_if( scene.begin(),scene.end(),
+							 std::find_if( entityPtrs.begin(),entityPtrs.end(),
 										   [&]( const std::unique_ptr<Entity>& pe )
 										   {
 											   Star* ps = reinterpret_cast<Star*>( pe.get() );
 											   return pos.DistToSq( ps->GetPosition() ) < 
 												   outRad * outRad + 2 * outRad * ps->GetOuterRadius() + ps->GetOuterRadius() * ps->GetOuterRadius();
 										   }
-							) != scene.end() );
+							) != entityPtrs.end() );
 
 						 return std::make_unique<Star>(
 								 outRad,inRad,flaresDist( rng ),
@@ -116,8 +116,8 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	for ( const auto& e : scene )
+	for ( const auto& pe : entityPtrs )
 	{
-		cam.Draw( std::move( e->GetDrawable() ) );
+		cam.Draw( std::move( pe->GetDrawable() ) );
 	}
 }

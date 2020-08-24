@@ -48,7 +48,7 @@ public:
 		return c;
 	}
 
-protected:
+private:
 	Color c;
 	std::vector<Vec2> model;
 	Vec2 pos = { 0.0f,0.0f };
