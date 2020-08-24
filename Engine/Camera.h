@@ -4,6 +4,7 @@
 #include "Graphics.h"
 #include "Vec2.h"
 #include <vector>
+#include "Drawable.h"
 
 class Camera
 {
@@ -16,9 +17,9 @@ public:
 	{
 	}
 
-	inline void AddPosition( Vec2 dpos )
+	inline void MoveBy( Vec2 offset )
 	{
-		pos += dpos;
+		pos += offset;
 	}
 	inline void SetPosition( Vec2 newPos )
 	{
@@ -37,14 +38,11 @@ public:
 		return scale;
 	}
 
-	void DrawPolyline( std::vector<Vec2> verts,Color c ) const
+	void Draw( Drawable d ) const
 	{
-		for ( auto& v : verts )
-		{
-			v -= pos;
-			v *= scale;
-		}
-		ct.DrawPolyline( std::move( verts ),c );
+		d.Translate( -pos );
+		d.Scale( scale );
+		ct.Draw( std::move( d ) );
 	}
 
 private:

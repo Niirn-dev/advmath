@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Vec2.h"
 #include <vector>
+#include "Drawable.h"
 
 class CoordinateTransformer
 {
@@ -13,15 +14,12 @@ public:
 	{
 	}
 
-	void DrawPolyline( std::vector<Vec2> verts,Color c ) const
+	void Draw( Drawable d ) const
 	{
 		const Vec2 offset = Vec2{ float( Graphics::ScreenWidth / 2 ),float( Graphics::ScreenHeight / 2 ) };
-		for ( auto& v : verts )
-		{
-			v.y *= -1.0f;
-			v += offset;
-		}
-		gfx.DrawPolyline( std::move( verts ),c );
+		d.ScaleIndividually( 1.0f,-1.0f );
+		d.Translate( offset );
+		gfx.DrawPolyline( std::move( d.GetPolyline() ),d.GetColor() );
 	}
 
 private:

@@ -3,6 +3,7 @@
 #include "Vec2.h"
 #include <vector>
 #include "Graphics.h"
+#include "Drawable.h"
 
 class Entity
 {
@@ -14,26 +15,32 @@ public:
 		pos( pos )
 	{
 	}
-	inline void AddPosition( Vec2 dpos )
+	inline void TranslateBy( Vec2 offset )
 	{
-		pos += dpos;
+		pos += offset;
 	}
 	inline void SetPosition( Vec2 newPos )
 	{
 		pos = newPos;
 	}
-	inline Vec2 GetPosition() const
+	inline const Vec2& GetPosition() const
 	{
 		return pos;
 	}
-	std::vector<Vec2> GetModel() const
+	inline void SetScale( float s )
 	{
-		std::vector<Vec2> verts = model;
-		for ( auto& v : verts )
-		{
-			v += pos;
-		}
-		return verts;
+		scale = s;
+	}
+	inline float GetScale() const
+	{
+		return scale;
+	}
+	Drawable GetDrawable() const
+	{
+		Drawable d( model,c );
+		d.Scale( scale );
+		d.Translate( pos );
+		return std::move( d );
 	}
 	inline Color GetColor() const
 	{
@@ -43,5 +50,6 @@ public:
 private:
 	Color c;
 	std::vector<Vec2> model;
-	Vec2 pos;
+	Vec2 pos = { 0.0f,0.0f };
+	float scale = 1.0f;
 };

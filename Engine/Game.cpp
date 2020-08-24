@@ -47,19 +47,19 @@ void Game::UpdateModel()
 	{
 		if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
 		{
-			cam.AddPosition( Vec2{ -5.0f,0.0f } );
+			cam.MoveBy( Vec2{ -5.0f,0.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
 		{
-			cam.AddPosition( Vec2{ 5.0f,0.0f } );
+			cam.MoveBy( Vec2{ 5.0f,0.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( VK_UP ) )
 		{
-			cam.AddPosition( Vec2{ 0.0f,5.0f } );
+			cam.MoveBy( Vec2{ 0.0f,5.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
 		{
-			cam.AddPosition( Vec2{ 0.0f,-5.0f } );
+			cam.MoveBy( Vec2{ 0.0f,-5.0f } );
 		}
 	}
 
@@ -79,5 +79,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	cam.DrawPolyline( std::move( ent.GetModel() ),ent.GetColor() );
+	cam.Draw( std::move( ent.GetDrawable() ) );
 }
