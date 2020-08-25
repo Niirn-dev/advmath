@@ -29,6 +29,7 @@
 #include "Camera.h"
 #include "Entity.h"
 #include <memory>
+#include "FrameTimer.h"
 
 class Game
 {
@@ -48,10 +49,27 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	FrameTimer ft;
 	CoordinateTransformer ct;
 	Camera cam;
 	Vei2 prevMousePos = { 0,0 };
-	static constexpr int nEntities = 50;
+	static constexpr float worldWidth = 10000.0f;
+	static constexpr float worldHeight = 6000.0f;
+	static constexpr float minInnerRad = 40.0f;
+	static constexpr float maxInnerRad = 200.0f;
+	static constexpr float meanInnerRad = 120.0f;
+	static constexpr float devInnerRad = 30.0f;
+	static constexpr float minOuterRad = 220.0f;
+	static constexpr float maxOuterRad = 600.0f;
+	static constexpr float meanOuterRad = 340.0f;
+	static constexpr float devOuterRad = 100.0;
+	static constexpr int minFlares = 3;
+	static constexpr int maxFlares = 20;
+	static constexpr float minStarColorPhase = -3.14159f;
+	static constexpr float maxStarColorPhase = 3.14159f;
+	static constexpr float minStarColorFreq = 1.0f;
+	static constexpr float maxStarColorFreq = 4.0f;
+	static constexpr int nEntities = 120;
 	std::vector<std::unique_ptr<Entity>> entityPtrs;
 	/********************************/
 };

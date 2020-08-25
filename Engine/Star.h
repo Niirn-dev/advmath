@@ -3,20 +3,35 @@
 #include <vector>
 #include "Vec2.h"
 #include "Entity.h"
+#include <algorithm>
 
 class Star : public Entity
 {
 public:
-	Star( float outerRadius,float innerRadius,int nFlares,Vec2 pos,Color c )
+	Star( float outerRadius,float innerRadius,int nFlares,Vec2 pos,Color c,float phase,float freq )
 		:
 		Entity( Make( outerRadius,innerRadius,nFlares ),pos,c ),
 		outRad( outerRadius ),
-		inRad( innerRadius )
+		inRad( innerRadius ),
+		baseColor( c ),
+		colorPhase( phase ),
+		colorFreq( freq )
 	{
 	}
-	inline float GetSize() const
+	inline float GetSize() const override
 	{
 		return outRad;
+	}
+	void Update( float dt ) override
+	{
+		Color c;
+		const int offset = int( 127.0f + 128.0f * sinf( colorFreq * time + colorPhase ) );
+		c.SetR( std::min( 255,baseColor.GetR() + offset ) );
+		c.SetG( std::min( 255,baseColor.GetG() + offset ) );
+		c.SetB( std::min( 255,baseColor.GetB() + offset ) );
+
+		time += dt;
+		SetColor( c );
 	}
 
 private:
@@ -39,4 +54,8 @@ private:
 private:
 	float outRad;
 	float inRad;
+	const Color baseColor;
+	const float colorPhase;
+	const float colorFreq;
+	float time = 0.0f;
 };

@@ -38,6 +38,10 @@ public:
 		return scale;
 	}
 	virtual float GetSize() const = 0;
+	virtual void Update( float dt )
+	{
+		return;
+	}
 	Drawable GetDrawable() const
 	{
 		Drawable drawable( model,c );
@@ -45,9 +49,9 @@ public:
 		drawable.Translate( pos );
 		return std::move( drawable );
 	}
-	inline Color GetColor() const
+	inline void SetColor( Color c_in )
 	{
-		return c;
+		c = c_in;
 	}
 
 private:

@@ -34,21 +34,24 @@ Game::Game( MainWindow& wnd )
 	cam( ct )
 {
 	std::mt19937 rng( std::random_device{}() );
-	std::uniform_real_distribution<float> posDist( -2000.0f,2000.0f );
-	std::uniform_real_distribution<float> inRadDist( 40.0f,120.0f );
-	std::uniform_real_distribution<float> outRadDist( 140.0f,300.0f );
-	std::uniform_int_distribution<int> flaresDist( 3,16 );
+	std::uniform_real_distribution<float> xDist( -worldWidth / 2.0f,worldWidth / 2.0f );
+	std::uniform_real_distribution<float> yDist( -worldHeight / 2.0f,worldHeight / 2.0f );
+	std::normal_distribution<float> inRadDist( meanInnerRad,devInnerRad );
+	std::normal_distribution<float> outRadDist( meanOuterRad,devOuterRad );
+	std::uniform_int_distribution<int> flaresDist( minFlares,maxFlares );
 	std::uniform_int_distribution<unsigned int> cDist( 0,255 );
+	std::uniform_real_distribution<float> phaseDist( minStarColorPhase,maxStarColorPhase );
+	std::uniform_real_distribution<float> freqDist( minStarColorFreq,maxStarColorFreq );
 	entityPtrs.reserve( nEntities );
 	std::generate_n( std::back_inserter( entityPtrs ),nEntities,
 					 [&]() 
 					 {
-						 float outRad = outRadDist( rng );
-						 float inRad = inRadDist( rng );
+						 float outRad;
 						 Vec2 pos;
 						 do
 						 {
-							 pos = Vec2{ posDist( rng ),posDist( rng ) };
+							 pos = Vec2{ xDist( rng ),yDist( rng ) };
+							 outRad = std::clamp( outRadDist( rng ),minOuterRad,maxOuterRad );
 						 } while (
 							 std::find_if( entityPtrs.begin(),entityPtrs.end(),
 										   [&]( const std::unique_ptr<Entity>& pe )
@@ -59,12 +62,11 @@ Game::Game( MainWindow& wnd )
 							) != entityPtrs.end() );
 
 						 return std::make_unique<Star>(
-								 outRad,inRad,flaresDist( rng ),
-								 pos,
+								 outRad,std::clamp( inRadDist( rng ),minInnerRad,maxInnerRad ),flaresDist( rng ),pos,
 								 Color{ unsigned char( cDist( rng ) ),
 										unsigned char( cDist( rng ) ),
 										unsigned char( cDist( rng ) )
-								 }
+								 },phaseDist( rng ),freqDist( rng )
 						 );
 					 } );
 }
@@ -79,6 +81,12 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	float dt = ft.Mark();
+	for ( auto& pe : entityPtrs )
+	{
+		pe->Update( dt );
+	}
+
 	while ( !wnd.mouse.IsEmpty() )
 	{
 		const auto e = wnd.mouse.Read();
