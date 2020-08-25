@@ -32,6 +32,9 @@ public:
 
 		time += dt;
 		SetColor( c );
+
+		const float scale_factor = sinf( 3.0f * colorFreq * time + colorPhase / 2.0f ) + 2.0f;
+		SetScale( baseScale / scale_factor );
 	}
 
 private:
@@ -57,5 +60,6 @@ private:
 	const Color baseColor;
 	const float colorPhase;
 	const float colorFreq;
+	const float baseScale = 1.0f;
 	float time = 0.0f;
 };
