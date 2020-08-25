@@ -53,13 +53,13 @@ Game::Game( MainWindow& wnd )
 							 pos = Vec2{ xDist( rng ),yDist( rng ) };
 							 outRad = std::clamp( outRadDist( rng ),minOuterRad,maxOuterRad );
 						 } while (
-							 std::find_if( entityPtrs.begin(),entityPtrs.end(),
+							 std::any_of( entityPtrs.begin(),entityPtrs.end(),
 										   [&]( const std::unique_ptr<Entity>& pe )
 										   {
 											   return pos.DistToSq( pe->GetPosition() ) < 
 												   outRad * outRad + 2 * outRad * pe->GetSize() + pe->GetSize() * pe->GetSize();
 										   }
-							) != entityPtrs.end() );
+							) );
 
 						 return std::make_unique<Star>(
 								 outRad,std::clamp( inRadDist( rng ),minInnerRad,maxInnerRad ),flaresDist( rng ),pos,
