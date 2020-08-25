@@ -53,9 +53,8 @@ Game::Game( MainWindow& wnd )
 							 std::find_if( entityPtrs.begin(),entityPtrs.end(),
 										   [&]( const std::unique_ptr<Entity>& pe )
 										   {
-											   Star* ps = reinterpret_cast<Star*>( pe.get() );
-											   return pos.DistToSq( ps->GetPosition() ) < 
-												   outRad * outRad + 2 * outRad * ps->GetOuterRadius() + ps->GetOuterRadius() * ps->GetOuterRadius();
+											   return pos.DistToSq( pe->GetPosition() ) < 
+												   outRad * outRad + 2 * outRad * pe->GetSize() + pe->GetSize() * pe->GetSize();
 										   }
 							) != entityPtrs.end() );
 
@@ -111,6 +110,9 @@ void Game::ComposeFrame()
 {
 	for ( const auto& pe : entityPtrs )
 	{
-		cam.Draw( std::move( pe->GetDrawable() ) );
+		if ( cam.ContainsCircle( pe->GetPosition(),pe->GetSize() ) )
+		{
+			cam.Draw( std::move( pe->GetDrawable() ) );
+		}
 	}
 }

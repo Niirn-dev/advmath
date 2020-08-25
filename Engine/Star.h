@@ -14,14 +14,9 @@ public:
 		inRad( innerRadius )
 	{
 	}
-
-	inline float GetOuterRadius() const
+	inline float GetSize() const
 	{
 		return outRad;
-	}
-	inline float GetInnerRadius() const
-	{
-		return inRad;
 	}
 
 private:

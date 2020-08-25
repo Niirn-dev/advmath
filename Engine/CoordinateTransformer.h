@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graphics.h"
+#include "Rect.h"
 #include "Vec2.h"
 #include <vector>
 #include "Drawable.h"
@@ -28,6 +29,13 @@ public:
 		v.y *= T( -1 );
 		v += offset;
 		return v;
+	}
+	static RectF GetScreenRect()
+	{
+		const Vec2 offset = Vec2{ float( Graphics::ScreenWidth / 2 ),float( Graphics::ScreenHeight / 2 ) };
+		auto screenRect = RectF( -offset,offset );
+		screenRect.Scale( 1.0f,-1.0f );
+		return screenRect;
 	}
 
 private:

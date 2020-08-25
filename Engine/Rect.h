@@ -49,6 +49,13 @@ public:
 			std::min( p0.x,p1.x ),
 			std::max( p0.x,p1.x ) )
 	{}
+	inline static _Rect<T> FromCenter( _Vec2<T> center,T halfWidth,T halfHeight )
+	{
+		return _Rect<T>(
+				center - _Vec2<T>( halfWidth,halfHeight ),
+				center + _Vec2<T>( halfWidth,halfHeight )
+			);
+	}
 	inline	void Translate( _Vec2<T> d )
 	{
 		Translate( d.x,d.y );
@@ -59,6 +66,20 @@ public:
 		bottom += dy;
 		left += dx;
 		right += dx;
+	}
+	inline void Scale( T factor )
+	{
+		top *= factor;
+		bottom *= factor;
+		left *= factor;
+		right *= factor;
+	}
+	inline void Scale( T factor_x,T factor_y )
+	{
+		left *= factor_x;
+		right *= factor_x;
+		top *= factor_y;
+		bottom *= factor_y;
 	}
 	template <typename T2>
 	inline	operator _Rect<T2>() const
@@ -79,6 +100,13 @@ public:
 	inline	T GetHeight() const
 	{
 		return bottom - top;
+	}
+	inline _Vec2<T> GetCenter() const
+	{
+		return _Vec2<T>(
+				( left + right ) / T( 2 ),
+				( top + bottom ) / T( 2 )
+			);
 	}
 	inline	bool Overlaps( const _Rect& rect ) const
 	{

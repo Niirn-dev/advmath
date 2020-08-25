@@ -7,7 +7,7 @@
 
 class Entity
 {
-public:
+protected:
 	Entity( std::vector<Vec2> model,Vec2 pos,Color c )
 		:
 		c ( c ),
@@ -15,6 +15,7 @@ public:
 		pos( pos )
 	{
 	}
+public:
 	virtual ~Entity() = default;
 	inline void TranslateBy( Vec2 offset )
 	{
@@ -36,6 +37,7 @@ public:
 	{
 		return scale;
 	}
+	virtual float GetSize() const = 0;
 	Drawable GetDrawable() const
 	{
 		Drawable drawable( model,c );
